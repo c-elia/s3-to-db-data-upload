@@ -25,3 +25,28 @@ terraform plan
 ```console
 terraform apply
 ```
+
+
+### Lambda
+
+To deploy the lambda image run the commands below
+
+- Create a variable to store the image tag version
+
+    `export TAG=v1.0`
+
+- Login to ECR
+
+    `aws ecr get-login-password --region <aws-region> | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com`
+
+- Build the image
+
+    `docker build --platform linux/amd64 -t <repository-name>:$TAG .`
+
+- Tag the image that will be pushed
+
+    `docker tag <repository-name>:$TAG <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/<repository-name>:$TAG`
+
+- Push the image
+
+    `docker push <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/<repository-name>:$TAG`
